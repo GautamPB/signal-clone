@@ -17,6 +17,10 @@ const CustomListComponent = () => {
                 <ListItem.Title style={{ fontWeight: 'bold' }}>
                     Signal Chat
                 </ListItem.Title>
+                <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
+                    This is a test subtitle. Lets put more content on this line
+                    to see the dots
+                </ListItem.Subtitle>
             </ListItem.Content>
         </ListItem>
     )
