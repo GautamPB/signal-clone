@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect } from 'react'
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { Input, Button, Text } from 'react-native-elements'
+import { auth } from '../firebase'
 
 const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState('')
@@ -15,7 +16,21 @@ const RegisterScreen = ({ navigation }) => {
         })
     }, [navigation])
 
-    const register = () => {}
+    const register = () => {
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((authUser) => {
+                authUser.user.updateProfile({
+                    displayName: name,
+                    photoURL:
+                        imageURL ||
+                        'https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg',
+                })
+                navigation.replace('Home')
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
+    }
 
     return (
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
