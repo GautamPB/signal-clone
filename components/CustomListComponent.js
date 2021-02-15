@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ListItem, Avatar } from 'react-native-elements'
 
-const CustomListComponent = () => {
+const CustomListComponent = ({ id, chatName, enterChat }) => {
     return (
-        <ListItem>
+        <ListItem key={id} bottomDivider>
             <Avatar
                 rounded
                 source={{
@@ -15,11 +15,10 @@ const CustomListComponent = () => {
 
             <ListItem.Content>
                 <ListItem.Title style={{ fontWeight: 'bold' }}>
-                    Signal Chat
+                    {chatName}
                 </ListItem.Title>
                 <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
-                    This is a test subtitle. Lets put more content on this line
-                    to see the dots
+                    ABC
                 </ListItem.Subtitle>
             </ListItem.Content>
         </ListItem>

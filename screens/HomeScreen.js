@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import {
     Text,
     SafeAreaView,
@@ -13,11 +13,25 @@ import { auth, db } from '../firebase'
 import { AntDesign, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons'
 
 const HomeScreen = ({ navigation }) => {
+    const [chats, setChats] = useState([])
+
     const signOutUser = () => {
         auth.signOut().then(() => {
             navigation.replace('Login')
         })
     }
+
+    useEffect(() => {
+        const unsubscribe = db.collection('chats').onSnapshot((snapshot) =>
+            setChats(
+                snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    data: doc.data(),
+                }))
+            )
+        )
+        return unsubscribe
+    }, [])
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -51,7 +65,12 @@ const HomeScreen = ({ navigation }) => {
                     <TouchableOpacity activeOpacity={0.5}>
                         <AntDesign name="camerao" size={24} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.5}>
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={() => {
+                            navigation.navigate('Add Chat')
+                        }}
+                    >
                         <SimpleLineIcons
                             name="pencil"
                             size={24}
@@ -73,8 +92,10 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView>
-            <ScrollView>
-                <CustomListComponent />
+            <ScrollView style={styles.container}>
+                {chats.map(({ id, data: { chatName } }) => (
+                    <CustomListComponent key={id} id={id} chatName={chatName} />
+                ))}
             </ScrollView>
         </SafeAreaView>
     )
@@ -82,4 +103,8 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        height: '100%',
+    },
+})
