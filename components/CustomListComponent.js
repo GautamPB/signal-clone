@@ -4,7 +4,11 @@ import { ListItem, Avatar } from 'react-native-elements'
 
 const CustomListComponent = ({ id, chatName, enterChat }) => {
     return (
-        <ListItem key={id} bottomDivider>
+        <ListItem
+            onPress={() => enterChat(id, chatName)}
+            key={id}
+            bottomDivider
+        >
             <Avatar
                 rounded
                 source={{
